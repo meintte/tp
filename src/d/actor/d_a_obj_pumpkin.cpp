@@ -1,14 +1,12 @@
 /**
  * @file d_a_obj_pumpkin.cpp
- * 
-*/
+ *
+ */
 
 #include "d/actor/d_a_obj_pumpkin.h"
+#include "d/actor/d_a_npc.h"
 #include "d/d_cc_d.h"
 #include "dol2asm.h"
-
-
-
 
 //
 // Forward References:
@@ -155,7 +153,6 @@ extern "C" extern void* __vt__12cCcD_CylAttr[25];
 extern "C" extern void* __vt__14cCcD_ShapeAttr[22];
 extern "C" extern void* __vt__9cCcD_Stts[8];
 extern "C" u8 now__14mDoMtx_stack_c[48];
-extern "C" extern u8 g_dComIfG_gameInfo[122384];
 extern "C" u8 mSimpleTexObj__21dDlst_shadowControl_c[32];
 extern "C" u8 sincosTable___5JMath[65536];
 extern "C" u8 mAudioMgrPtr__10Z2AudioMgr[4 + 4 /* padding */];
@@ -206,16 +203,16 @@ SECTION_DATA static void* l_resNameList[2] = {
 /* 80CB849C-80CB84E0 000030 0044+00 1/2 0/0 0/0 .data            l_ccDCyl */
 static dCcD_SrcCyl l_ccDCyl = {
     {
-        {0x0, {{0x0, 0x0, 0x0}, {0x0, 0x0}, 0x0}}, // mObj
-        {dCcD_SE_NONE, 0x0, 0x0, 0x0, 0x0}, // mGObjAt
-        {dCcD_SE_NONE, 0x0, 0x0, 0x0, 0x0}, // mGObjTg
-        {0x0}, // mGObjCo
-    }, // mObjInf
+        {0x0, {{0x0, 0x0, 0x0}, {0x0, 0x0}, 0x0}},  // mObj
+        {dCcD_SE_NONE, 0x0, 0x0, 0x0, 0x0},         // mGObjAt
+        {dCcD_SE_NONE, 0x0, 0x0, 0x0, 0x0},         // mGObjTg
+        {0x0},                                      // mGObjCo
+    },                                              // mObjInf
     {
-        {0.0f, 0.0f, 0.0f}, // mCenter
-        0.0f, // mRadius
-        0.0f // mHeight
-    } // mCyl
+        {0.0f, 0.0f, 0.0f},  // mCenter
+        0.0f,                // mRadius
+        0.0f                 // mHeight
+    }  // mCyl
 };
 
 /* 80CB84E0-80CB84E8 000074 0008+00 1/1 0/0 0/0 .data            emttrId$5110 */
@@ -234,20 +231,20 @@ static actor_method_class daObj_Pumpkin_MethodTable = {
 
 /* 80CB8508-80CB8538 -00001 0030+00 0/0 0/0 1/0 .data            g_profile_OBJ_PUMPKIN */
 extern actor_process_profile_definition g_profile_OBJ_PUMPKIN = {
-  fpcLy_CURRENT_e,            // mLayerID
-  8,                          // mListID
-  fpcPi_CURRENT_e,            // mListPrio
-  PROC_OBJ_PUMPKIN,           // mProcName
-  &g_fpcLf_Method.base,      // sub_method
-  sizeof(daObj_Pumpkin_c),    // mSize
-  0,                          // mSizeOther
-  0,                          // mParameters
-  &g_fopAc_Method.base,       // sub_method
-  716,                        // mPriority
-  &daObj_Pumpkin_MethodTable, // sub_method
-  0x00044100,                 // mStatus
-  fopAc_ACTOR_e,              // mActorType
-  fopAc_CULLBOX_CUSTOM_e,     // cullType
+    fpcLy_CURRENT_e,             // mLayerID
+    8,                           // mListID
+    fpcPi_CURRENT_e,             // mListPrio
+    PROC_OBJ_PUMPKIN,            // mProcName
+    &g_fpcLf_Method.base,        // sub_method
+    sizeof(daObj_Pumpkin_c),     // mSize
+    0,                           // mSizeOther
+    0,                           // mParameters
+    &g_fopAc_Method.base,        // sub_method
+    716,                         // mPriority
+    &daObj_Pumpkin_MethodTable,  // sub_method
+    0x00044100,                  // mStatus
+    fopAc_ACTOR_e,               // mActorType
+    fopAc_CULLBOX_CUSTOM_e,      // cullType
 };
 
 /* 80CB8538-80CB8544 0000CC 000C+00 2/2 0/0 0/0 .data            __vt__8cM3dGPla */
@@ -625,8 +622,27 @@ void daObj_Pumpkin_c::createHeapCallBack(fopAc_ac_c* param_0) {
 }
 
 /* 80CB7844-80CB78C8 0021A4 0084+00 1/1 0/0 0/0 .text            isDelete__15daObj_Pumpkin_cFv */
-void daObj_Pumpkin_c::isDelete() {
-    // NONMATCHING
+bool daObj_Pumpkin_c::isDelete() {
+    char bVar1;
+    int iVar2;
+    bool bVar3;
+
+    if (bVar1 == 2) {
+        iVar2 = daNpcT_chkEvtBit(0x92);
+        bVar3 = iVar2 == 0;
+    } else if (bVar1 < 2) {
+        if (bVar1 == 0) {
+            bVar3 = false;
+        } else {
+            iVar2 = daNpcT_chkEvtBit(0x1e);
+            bVar3 = iVar2 == 0;
+        }
+    } else if (bVar1 < 4) {
+        bVar3 = false;
+    } else {
+        bVar3 = false;
+    }
+    return bVar3;
 }
 
 /* 80CB78C8-80CB7924 002228 005C+00 1/1 0/0 0/0 .text            setEnvTevColor__15daObj_Pumpkin_cFv
