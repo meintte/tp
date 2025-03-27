@@ -169,6 +169,7 @@ enum fopAcM_CARRY {
     /* 0x30 */ fopAcM_CARRY_UNK_30 = 0x30,
     /* 0x40 */ fopAcM_CARRY_UNK_40 = 0x40,
     /* 0x80 */ fopAcM_CARRY_CHICKEN = 0x80,
+    /* 0x85 */ fopAcM_CARRY_PUMPKIN = 0x85,
 };
 
 inline u32 fopAcM_CheckCarryType(fopAc_ac_c* actor, fopAcM_CARRY type) {
