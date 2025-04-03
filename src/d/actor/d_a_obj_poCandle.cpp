@@ -1,18 +1,18 @@
 /**
  * @file d_a_obj_poCandle.cpp
- * 
-*/
+ *
+ */
 
 #include "d/actor/d_a_obj_poCandle.h"
+#include "d/d_com_inf_game.h"
+#include "d/d_event_lib.h"
 #include "dol2asm.h"
-
 
 //
 // Forward References:
 //
 
 extern "C" void __ct__16daPoCandle_HIO_cFv();
-extern "C" void __dt__14mDoHIO_entry_cFv();
 extern "C" void setBaseMtx__12daPoCandle_cFv();
 extern "C" void CreateHeap__12daPoCandle_cFv();
 extern "C" void create__12daPoCandle_cFv();
@@ -90,7 +90,6 @@ extern "C" void _savegpr_28();
 extern "C" void _restgpr_28();
 extern "C" extern void* __vt__16dBgS_MoveBgActor[10];
 extern "C" u8 now__14mDoMtx_stack_c[48];
-extern "C" extern u8 g_dComIfG_gameInfo[122384];
 extern "C" u8 mAudioMgrPtr__10Z2AudioMgr[4 + 4 /* padding */];
 extern "C" void __register_global_object();
 
@@ -182,20 +181,20 @@ static actor_method_class l_daPoCandle_Method = {
 
 /* 80CB2790-80CB27C0 -00001 0030+00 0/0 0/0 1/0 .data            g_profile_Obj_poCandle */
 extern actor_process_profile_definition g_profile_Obj_poCandle = {
-  fpcLy_CURRENT_e,        // mLayerID
-  3,                      // mListID
-  fpcPi_CURRENT_e,        // mListPrio
-  PROC_Obj_poCandle,      // mProcName
-  &g_fpcLf_Method.base,  // sub_method
-  sizeof(daPoCandle_c),   // mSize
-  0,                      // mSizeOther
-  0,                      // mParameters
-  &g_fopAc_Method.base,   // sub_method
-  650,                    // mPriority
-  &l_daPoCandle_Method,   // sub_method
-  0x00044000,             // mStatus
-  fopAc_ACTOR_e,          // mActorType
-  fopAc_CULLBOX_CUSTOM_e, // cullType
+    fpcLy_CURRENT_e,         // mLayerID
+    3,                       // mListID
+    fpcPi_CURRENT_e,         // mListPrio
+    PROC_Obj_poCandle,       // mProcName
+    &g_fpcLf_Method.base,    // sub_method
+    sizeof(daPoCandle_c),    // mSize
+    0,                       // mSizeOther
+    0,                       // mParameters
+    &g_fopAc_Method.base,    // sub_method
+    650,                     // mPriority
+    &l_daPoCandle_Method,    // sub_method
+    0x00044000,              // mStatus
+    fopAc_ACTOR_e,           // mActorType
+    fopAc_CULLBOX_CUSTOM_e,  // cullType
 };
 
 /* 80CB27C0-80CB27D8 0000D0 0018+00 3/3 0/0 0/0 .data            __vt__17dEvLib_callback_c */
@@ -237,27 +236,18 @@ SECTION_DATA extern void* __vt__16daPoCandle_HIO_c[3] = {
     (void*)__dt__16daPoCandle_HIO_cFv,
 };
 
-/* 80CB282C-80CB2838 00013C 000C+00 3/3 0/0 0/0 .data            __vt__14mDoHIO_entry_c */
-SECTION_DATA extern void* __vt__14mDoHIO_entry_c[3] = {
-    (void*)NULL /* RTTI */,
-    (void*)NULL,
-    (void*)__dt__14mDoHIO_entry_cFv,
-};
-
 /* 80CB1A6C-80CB1A9C 0000EC 0030+00 1/1 0/0 0/0 .text            __ct__16daPoCandle_HIO_cFv */
 daPoCandle_HIO_c::daPoCandle_HIO_c() {
-    // NONMATCHING
-}
-
-/* 80CB1A9C-80CB1AE4 00011C 0048+00 1/0 0/0 0/0 .text            __dt__14mDoHIO_entry_cFv */
-// mDoHIO_entry_c::~mDoHIO_entry_c() {
-extern "C" void __dt__14mDoHIO_entry_cFv() {
-    // NONMATCHING
+    field_0x4 = 0x1e;
+    field_0x8 = 3.0;
 }
 
 /* 80CB1AE4-80CB1B6C 000164 0088+00 2/2 0/0 0/0 .text            setBaseMtx__12daPoCandle_cFv */
 void daPoCandle_c::setBaseMtx() {
-    // NONMATCHING
+    mDoMtx_stack_c::transS(current.pos.x, current.pos.y, current.pos.z);
+    mDoMtx_stack_c::ZXYrotM(current.angle.x, current.angle.y, current.angle.z);
+    mpModel->setBaseScale(scale);
+    mpModel->setBaseTRMtx(mDoMtx_stack_c::get());
 }
 
 /* ############################################################################################## */
@@ -268,8 +258,15 @@ SECTION_DEAD static char const* const stringBase_80CB26E8 = "P_PCNDL";
 #pragma pop
 
 /* 80CB1B6C-80CB1BD8 0001EC 006C+00 1/0 0/0 0/0 .text            CreateHeap__12daPoCandle_cFv */
-void daPoCandle_c::CreateHeap() {
-    // NONMATCHING
+int daPoCandle_c::CreateHeap() {
+    J3DModelData* modelData = static_cast<J3DModelData*>(dComIfG_getObjectRes("P_PCNDL", 4));
+
+    mpModel = mDoExt_J3DModel__create(modelData, 0x80000, 0x11000084);
+
+    if (mpModel == NULL) {
+        return 0;
+    }
+    return 1;
 }
 
 /* ############################################################################################## */
@@ -278,8 +275,40 @@ SECTION_RODATA static f32 const lit_3714 = 25.0f;
 COMPILER_STRIP_GATE(0x80CB26BC, &lit_3714);
 
 /* 80CB1BD8-80CB1D74 000258 019C+00 1/1 0/0 0/0 .text            create__12daPoCandle_cFv */
-void daPoCandle_c::create() {
-    // NONMATCHING
+cPhs__Step daPoCandle_c::create() {
+    fopAcM_SetupActor(this, daPoCandle_c);
+    cPhs__Step phaseStep = static_cast<cPhs__Step>(dComIfG_resLoad(&mPhaseReq, "P_PCNDL"));
+
+    if (phaseStep == cPhs_COMPLEATE_e) {
+        if (MoveBGCreate("P_PCNDL", 7, dBgS_MoveBGProc_TypicalRotY, 0x1600, NULL) == 5) {
+            return cPhs_ERROR_e;
+        }
+        setBaseMtx();
+        fopAcM_SetMtx(this, mpModel->getBaseTRMtx());
+        fopAcM_setCullSizeBox2(this, mpModel->getModelData());
+
+        field_0x5c4.x = current.pos.x;
+        field_0x5c4.y = current.pos.y + 25.0f;
+        field_0x5c4.z = current.pos.z;
+        field_0x5ec = fopAcM_GetParam(this) >> 16;
+
+        if (!field_0x5ec) {
+            field_0x5ec = 1;
+        }
+        lightInit();
+        field_0x5d4 = fopAcM_GetParam(this);
+        field_0x5d5 = fopAcM_GetParam(this) >> 8;
+        field_0x5d2 = 0;
+        field_0x5d1 = 0;
+
+        field_0x5d7 = dComIfGs_isSwitch(field_0x5d4, home.roomNo);
+        if (field_0x5d7) {
+            field_0x5d1 = 1;
+        }
+        init_modeWait();
+    }
+
+    return phaseStep;
 }
 
 /* ############################################################################################## */
@@ -315,17 +344,32 @@ COMPILER_STRIP_GATE(0x80CB26CC, &lit_3740);
 
 /* 80CB1D74-80CB1E00 0003F4 008C+00 1/1 0/0 0/0 .text            lightInit__12daPoCandle_cFv */
 void daPoCandle_c::lightInit() {
-    // NONMATCHING
+    mLightPos = field_0x5c4;
+    mLightPos.y += 10.0f;
+    if (field_0x5ec) {
+        mLightInfluence.mPosition = mLightPos;
+        mLightInfluence.mColor.r = 0xbc;
+        mLightInfluence.mColor.g = 0x66;
+        mLightInfluence.mColor.b = 0x42;
+        mLightInfluence.mPow = 500.0;
+        mLightInfluence.mFluctuation = 1.0;
+    } else {
+        field_0x5f0 = 0.0;
+    }
 }
 
 /* 80CB1E00-80CB1E30 000480 0030+00 1/1 0/0 0/0 .text            setLight__12daPoCandle_cFv */
 void daPoCandle_c::setLight() {
-    // NONMATCHING
+    if (field_0x5ec) {
+        dKy_plight_set(&mLightInfluence);
+    }
 }
 
 /* 80CB1E30-80CB1E60 0004B0 0030+00 1/1 0/0 0/0 .text            cutLight__12daPoCandle_cFv */
 void daPoCandle_c::cutLight() {
-    // NONMATCHING
+    if (field_0x5ec) {
+        dKy_plight_cut(&mLightInfluence);
+    }
 }
 
 /* ############################################################################################## */
@@ -366,7 +410,19 @@ COMPILER_STRIP_GATE(0x80CB26E0, &lit_3769);
 
 /* 80CB1E60-80CB1F10 0004E0 00B0+00 1/1 0/0 0/0 .text            pointLightProc__12daPoCandle_cFv */
 void daPoCandle_c::pointLightProc() {
-    // NONMATCHING
+    if (!field_0x5ec) {
+        GXColor col = {0xbc, 0x66, 0x42, 255};
+
+        if (field_0x5d1) {
+            cLib_addCalc(&field_0x5f0, 1.0f, 0.5f, 0.1f, 0.0001f);
+        } else {
+            cLib_addCalc(&field_0x5f0, 0.0f, 0.5f, 0.1f, 0.0001f);
+        }
+
+        if (field_0x5f0 >= 1e-6f) {
+            dKy_BossLight_set(&mLightPos, &col, field_0x5f0, 0);
+        }
+    }
 }
 
 /* ############################################################################################## */
@@ -385,39 +441,80 @@ static u8 data_80CB2858[4];
 
 /* 80CB1F10-80CB2140 000590 0230+00 1/0 0/0 0/0 .text            Execute__12daPoCandle_cFPPA3_A4_f
  */
-void daPoCandle_c::Execute(f32 (**param_0)[3][4]) {
-    // NONMATCHING
+int daPoCandle_c::Execute(f32 (**param_0)[3][4]) {
+    // if() {}
+
+    eventUpdate();
+
+    if (field_0x5d1) {
+        cXyz loc;
+        field_0x5d8 = g_dComIfG_gameInfo.play.getParticle()->set(
+            field_0x5d8, 0, 0x8670, &field_0x5c4, NULL, &shape_angle, &loc, 0xff, NULL, -1, NULL,
+            NULL, NULL, 1.0);
+        field_0x5dc = g_dComIfG_gameInfo.play.getParticle()->set(
+            field_0x5dc, 0, 0x8671, &field_0x5c4, NULL, &shape_angle, &loc, 0xff, NULL, -1, NULL,
+            NULL, NULL, 1.0);
+
+        s8 reverb = dComIfGp_getReverb(current.roomNo);
+    }
+
+    setBaseMtx();
+    pointLightProc();
+    return 1;
 }
 
 /* 80CB2140-80CB214C 0007C0 000C+00 2/2 0/0 0/0 .text            init_modeWait__12daPoCandle_cFv */
 void daPoCandle_c::init_modeWait() {
-    // NONMATCHING
+    field_0x5d6 = 0;
 }
 
 /* 80CB214C-80CB21D8 0007CC 008C+00 1/0 0/0 0/0 .text            modeWait__12daPoCandle_cFv */
 void daPoCandle_c::modeWait() {
-    // NONMATCHING
+    u8 bVar1 = field_0x5d7;
+    field_0x5d7 = fopAcM_isSwitch(this, field_0x5d4);
+    if (bVar1 != field_0x5d7) {
+        if (field_0x5d7) {
+            field_0x5d2 = 1;
+            init_modeOnFire();
+        } else {
+            field_0x5d2 = 0;
+            field_0x5d1 = false;
+            cutLight();
+        }
+    }
 }
 
 /* 80CB21D8-80CB22D4 000858 00FC+00 2/2 0/0 0/0 .text            init_modeOnFire__12daPoCandle_cFv
  */
 void daPoCandle_c::init_modeOnFire() {
-    // NONMATCHING
+    s8 reverb = dComIfGp_getReverb(current.roomNo);
+    mDoAud_seStart(0x80017, &field_0x5c4, 0, reverb);
+    cXyz local;
+    dComIfGp_particle_set(0, 0x86ad, &field_0x5c4, NULL, &shape_angle, &local, 0xff, NULL, -1, NULL,
+                          NULL, NULL);
+    setLight();
+    field_0x5d1 = true;
+    field_0x5d6 = 1;
 }
 
 /* 80CB22D4-80CB22F4 000954 0020+00 1/0 0/0 0/0 .text            modeOnFire__12daPoCandle_cFv */
 void daPoCandle_c::modeOnFire() {
-    // NONMATCHING
+    init_modeWait();
 }
 
 /* 80CB22F4-80CB2354 000974 0060+00 1/0 0/0 0/0 .text            modeOnSwWait__12daPoCandle_cFv */
 void daPoCandle_c::modeOnSwWait() {
-    // NONMATCHING
+    if (field_0x5d3) {
+        field_0x5d3--;
+    } else {
+        fopAcM_onSwitch(this, field_0x5d4);
+        init_modeEnd();
+    }
 }
 
 /* 80CB2354-80CB2360 0009D4 000C+00 1/1 0/0 0/0 .text            init_modeEnd__12daPoCandle_cFv */
 void daPoCandle_c::init_modeEnd() {
-    // NONMATCHING
+    field_0x5d6 = 3;
 }
 
 /* 80CB2360-80CB2364 0009E0 0004+00 1/0 0/0 0/0 .text            modeEnd__12daPoCandle_cFv */
@@ -426,41 +523,51 @@ void daPoCandle_c::modeEnd() {
 }
 
 /* 80CB2364-80CB2388 0009E4 0024+00 2/1 0/0 0/0 .text            eventStart__12daPoCandle_cFv */
-void daPoCandle_c::eventStart() {
-    // NONMATCHING
+bool daPoCandle_c::eventStart() {
+    init_modeOnFire();
+    return true;
 }
 
 /* 80CB2388-80CB242C 000A08 00A4+00 1/0 0/0 0/0 .text            Draw__12daPoCandle_cFv */
-void daPoCandle_c::Draw() {
-    // NONMATCHING
+int daPoCandle_c::Draw() {
+    g_env_light.settingTevStruct(16, &current.pos, &tevStr);
+    g_env_light.setLightTevColorType_MAJI(mpModel->mModelData, &tevStr);
+    dComIfGd_setListBG();
+    mDoExt_modelUpdateDL(mpModel);
+    dComIfGd_setList();
+    return 1;
 }
 
 /* 80CB242C-80CB247C 000AAC 0050+00 1/0 0/0 0/0 .text            Delete__12daPoCandle_cFv */
-void daPoCandle_c::Delete() {
-    // NONMATCHING
+int daPoCandle_c::Delete() {
+    dComIfG_resDelete(&mPhaseReq, "P_PCNDL");
+    if (field_0x5ec) {
+        dKy_plight_cut(&mLightInfluence);
+    }
+    return 1;
 }
 
 /* 80CB247C-80CB24A8 000AFC 002C+00 1/0 0/0 0/0 .text            daPoCandle_Draw__FP12daPoCandle_c
  */
-static void daPoCandle_Draw(daPoCandle_c* param_0) {
-    // NONMATCHING
+static int daPoCandle_Draw(daPoCandle_c* param_0) {
+    return param_0->Draw();
 }
 
 /* 80CB24A8-80CB24C8 000B28 0020+00 1/0 0/0 0/0 .text daPoCandle_Execute__FP12daPoCandle_c */
-static void daPoCandle_Execute(daPoCandle_c* param_0) {
-    // NONMATCHING
+static int daPoCandle_Execute(daPoCandle_c* param_0) {
+    return param_0->MoveBGExecute();
 }
 
 /* 80CB24C8-80CB24E8 000B48 0020+00 1/0 0/0 0/0 .text            daPoCandle_Delete__FP12daPoCandle_c
  */
-static void daPoCandle_Delete(daPoCandle_c* param_0) {
-    // NONMATCHING
+static int daPoCandle_Delete(daPoCandle_c* param_0) {
+    return param_0->MoveBGDelete();
 }
 
 /* 80CB24E8-80CB2508 000B68 0020+00 1/0 0/0 0/0 .text            daPoCandle_Create__FP10fopAc_ac_c
  */
-static void daPoCandle_Create(fopAc_ac_c* param_0) {
-    // NONMATCHING
+static int daPoCandle_Create(fopAc_ac_c* param_0) {
+    return static_cast<daPoCandle_c*>(param_0)->create();
 }
 
 /* 80CB2508-80CB2564 000B88 005C+00 2/1 0/0 0/0 .text            __dt__16daPoCandle_HIO_cFv */
@@ -487,31 +594,6 @@ static void func_80CB25A0() {
 /* 80CB25A8-80CB25B0 000C28 0008+00 1/0 0/0 0/0 .text            @1448@__dt__12daPoCandle_cFv */
 static void func_80CB25A8() {
     // NONMATCHING
-}
-
-/* 80CB25B0-80CB25F8 000C30 0048+00 1/0 0/0 0/0 .text            __dt__17dEvLib_callback_cFv */
-// dEvLib_callback_c::~dEvLib_callback_c() {
-extern "C" void __dt__17dEvLib_callback_cFv() {
-    // NONMATCHING
-}
-
-/* 80CB25F8-80CB2600 000C78 0008+00 1/0 0/0 0/0 .text            eventStart__17dEvLib_callback_cFv
- */
-// bool dEvLib_callback_c::eventStart() {
-extern "C" bool eventStart__17dEvLib_callback_cFv() {
-    return true;
-}
-
-/* 80CB2600-80CB2608 000C80 0008+00 2/0 0/0 0/0 .text            eventRun__17dEvLib_callback_cFv */
-// bool dEvLib_callback_c::eventRun() {
-extern "C" bool eventRun__17dEvLib_callback_cFv() {
-    return true;
-}
-
-/* 80CB2608-80CB2610 000C88 0008+00 2/0 0/0 0/0 .text            eventEnd__17dEvLib_callback_cFv */
-// bool dEvLib_callback_c::eventEnd() {
-extern "C" bool eventEnd__17dEvLib_callback_cFv() {
-    return true;
 }
 
 /* 80CB2610-80CB26A4 000C90 0094+00 2/1 0/0 0/0 .text            __dt__12daPoCandle_cFv */
