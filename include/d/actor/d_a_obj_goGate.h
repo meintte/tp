@@ -6,6 +6,7 @@
 #include "f_op/f_op_actor_mng.h"
 #include "m_Do/m_Do_hostIO.h"
 
+
 /**
  * @ingroup actors-objects
  * @class daGoGate_c
@@ -37,8 +38,8 @@ public:
     /* 80BFDDDC */ int Draw();
     /* 80BFDE80 */ int Delete();
 
-    u32 getLR() { return fopAcM_GetParamBit(this, 8, 8); }
-    u32 getSw() { return fopAcM_GetParamBit(this, 0, 8); }
+    inline u32 getLR() { return fopAcM_GetParamBit(this, 8, 8); }
+    inline u32 getSw() { return fopAcM_GetParamBit(this, 0, 8); }
 
 private:
     /* 0x5A0 */ request_of_phase_process_class mPhase;
