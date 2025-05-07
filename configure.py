@@ -1605,7 +1605,7 @@ config.libs = [
     ActorRel(NonMatching, "d_a_b_bq"),
     ActorRel(Equivalent, "d_a_b_dr"), # weak func order
     ActorRel(Equivalent, "d_a_b_dre"), # weak func order
-    ActorRel(NonMatching, "d_a_b_ds"),
+    ActorRel(Equivalent, "d_a_b_ds"),
     ActorRel(NonMatching, "d_a_b_gg"),
     ActorRel(NonMatching, "d_a_b_gm"),
     ActorRel(NonMatching, "d_a_b_gnd"),
@@ -1627,7 +1627,7 @@ config.libs = [
     ActorRel(Equivalent, "d_a_coach_2D"), # weak func order
     ActorRel(MatchingFor("GZ2E01"), "d_a_coach_fire"),
     ActorRel(Equivalent, "d_a_cow"),
-    ActorRel(NonMatching, "d_a_cstatue"),
+    ActorRel(MatchingFor("GZ2E01"), "d_a_cstatue"),
     ActorRel(Equivalent, "d_a_do"), # Z2SoundObjSimple dtor
     ActorRel(MatchingFor("GZ2E01"), "d_a_door_boss"),
     ActorRel(MatchingFor("GZ2E01"), "d_a_door_bossL5"),
@@ -1692,7 +1692,7 @@ config.libs = [
     ActorRel(NonMatching, "d_a_e_s1"),
     ActorRel(NonMatching, "d_a_e_sb"),
     ActorRel(NonMatching, "d_a_e_sf"),
-    ActorRel(NonMatching, "d_a_e_sg"),
+    ActorRel(MatchingFor("GZ2E01"), "d_a_e_sg"),
     ActorRel(NonMatching, "d_a_e_sh"),
     ActorRel(NonMatching, "d_a_e_sm"),
     ActorRel(NonMatching, "d_a_e_sm2"),
@@ -1705,7 +1705,7 @@ config.libs = [
     ActorRel(MatchingFor("GZ2E01"), "d_a_e_tk2"),
     ActorRel(MatchingFor("GZ2E01"), "d_a_e_tk_ball"),
     ActorRel(NonMatching, "d_a_e_tt"),
-    ActorRel(NonMatching, "d_a_e_vt"),
+    ActorRel(Equivalent, "d_a_e_vt"),
     ActorRel(NonMatching, "d_a_e_warpappear"),
     ActorRel(NonMatching, "d_a_e_wb"),
     ActorRel(NonMatching, "d_a_e_ws"),
