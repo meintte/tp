@@ -595,7 +595,7 @@ config.libs = [
             Object(MatchingFor("GZ2E01"), "d/actor/d_a_itembase.cpp"),
             Object(MatchingFor("GZ2E01"), "d/actor/d_a_no_chg_room.cpp"),
             Object(NonMatching, "d/actor/d_a_npc.cpp"),
-            Object(NonMatching, "d/actor/d_a_npc_cd.cpp"),
+            Object(Equivalent, "d/actor/d_a_npc_cd.cpp"), # weak func order
             Object(NonMatching, "d/actor/d_a_npc_cd2.cpp"),
             Object(NonMatching, "d/actor/d_a_obj_item.cpp"),
             Object(MatchingFor("GZ2E01"), "d/d_insect.cpp"),
@@ -804,7 +804,7 @@ config.libs = [
             Object(MatchingFor("GZ2E01"), "JSystem/JStudio/JStudio/jstudio-control.cpp"),
             Object(MatchingFor("GZ2E01"), "JSystem/JStudio/JStudio/jstudio-data.cpp"),
             Object(MatchingFor("GZ2E01"), "JSystem/JStudio/JStudio/jstudio-math.cpp"),
-            Object(NonMatching, "JSystem/JStudio/JStudio/jstudio-object.cpp"),
+            Object(MatchingFor("GZ2E01"), "JSystem/JStudio/JStudio/jstudio-object.cpp", extra_cflags=['-pragma "sym off"']),
             Object(MatchingFor("GZ2E01"), "JSystem/JStudio/JStudio/object-id.cpp"),
             Object(MatchingFor("GZ2E01"), "JSystem/JStudio/JStudio/stb.cpp"),
             Object(MatchingFor("GZ2E01"), "JSystem/JStudio/JStudio/stb-data-parse.cpp"),
@@ -1517,7 +1517,7 @@ config.libs = [
     ActorRel(NonMatching, "d_a_midna"),
     ActorRel(Equivalent, "d_a_nbomb"), # weak func order
     ActorRel(MatchingFor("GZ2E01"), "d_a_obj_life_container"),
-    ActorRel(NonMatching, "d_a_obj_yousei"),
+    ActorRel(Equivalent, "d_a_obj_yousei"), # weak func order
     ActorRel(MatchingFor("GZ2E01"), "d_a_spinner"),
     ActorRel(MatchingFor("GZ2E01"), "d_a_suspend"),
     ActorRel(MatchingFor("GZ2E01"), "d_a_tag_attention"),
@@ -1615,7 +1615,7 @@ config.libs = [
     ActorRel(NonMatching, "d_a_b_ob"),
     ActorRel(NonMatching, "d_a_b_oh"),
     ActorRel(MatchingFor("GZ2E01"), "d_a_b_oh2"),
-    ActorRel(NonMatching, "d_a_b_tn"),
+    ActorRel(Equivalent, "d_a_b_tn"), # weak func order
     ActorRel(Equivalent, "d_a_b_yo"), # weak func order
     ActorRel(Equivalent, "d_a_b_yo_ice"), # weak func order
     ActorRel(MatchingFor("GZ2E01"), "d_a_b_zant"),
@@ -1623,7 +1623,7 @@ config.libs = [
     ActorRel(MatchingFor("GZ2E01"), "d_a_b_zant_mobile"),
     ActorRel(MatchingFor("GZ2E01"), "d_a_b_zant_sima"),
     ActorRel(NonMatching, "d_a_balloon_2D"),
-    ActorRel(NonMatching, "d_a_bullet"),
+    ActorRel(MatchingFor("GZ2E01"), "d_a_bullet"),
     ActorRel(Equivalent, "d_a_coach_2D"), # weak func order
     ActorRel(MatchingFor("GZ2E01"), "d_a_coach_fire"),
     ActorRel(Equivalent, "d_a_cow"),
@@ -1816,9 +1816,9 @@ config.libs = [
     ActorRel(NonMatching, "d_a_npc_raca"),
     ActorRel(NonMatching, "d_a_npc_rafrel"),
     ActorRel(NonMatching, "d_a_npc_saru"),
-    ActorRel(NonMatching, "d_a_npc_seib"),
-    ActorRel(NonMatching, "d_a_npc_seic"),
-    ActorRel(NonMatching, "d_a_npc_seid"),
+    ActorRel(Equivalent, "d_a_npc_seib"), # weak func order
+    ActorRel(Equivalent, "d_a_npc_seic"), # weak func order
+    ActorRel(Equivalent, "d_a_npc_seid"), # Rodata oddity
     ActorRel(NonMatching, "d_a_npc_seira"),
     ActorRel(NonMatching, "d_a_npc_seira2"),
     ActorRel(NonMatching, "d_a_npc_seirei"),
